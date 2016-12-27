@@ -1,4 +1,4 @@
-
+process.env['TUNARI_DB'] = "MY TEST";
 var app = require('./app');
 
 var port = process.env.PORT || 5000;
