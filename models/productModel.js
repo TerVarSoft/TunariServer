@@ -28,6 +28,9 @@ var productSchema = new Schema({
 	tags: {
 		type: [String]
 	},
+	images: {
+		type: [String]
+	},
 	imageUrl : {
 		type: String
 	}, 

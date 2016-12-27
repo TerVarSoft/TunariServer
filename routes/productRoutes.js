@@ -118,6 +118,7 @@ var productRouter = function(Product){
             req.product.category = req.body.category;
             req.product.sortTag = req.body.sortTag;
             req.product.tags = req.body.tags;
+            req.product.images = req.body.images;
             req.product.properties = req.body.properties;
             req.product.buyingPrice = req.body.buyingPrice;
             req.product.prices = req.body.prices;
