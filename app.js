@@ -42,7 +42,8 @@ app.use(function (req, res, next) {
 });
 
 app.get('/', function(req, res) {
-    res.sendFile('./index.html',{root: __dirname }); 
+    //res.sendFile('./index.html',{root: __dirname });
+    res.send(process.env.TUNARI_DB || "No db connection string"); 
 });
 
 // catch 404 and forward to error handler
