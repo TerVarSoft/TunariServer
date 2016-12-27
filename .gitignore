@@ -1,0 +1,13 @@
+# Server Exclusions
+
+node_modules/*
+log/*
+public/*
+!public/images/
+data/
+config/local.env.js
+
+
+#Other
+
+.idea/*
