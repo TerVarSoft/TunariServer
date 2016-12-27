@@ -5,6 +5,11 @@ var favicon = require('serve-favicon');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+// Mongo 
+var mongo = require('mongodb');
+var mongoose = require('mongoose');
+mongoose.connect(process.env.TUNARI_DB);
+
 express.response.sendWrapped = function(obj) {
     return this.send({ 
       version: 'v1.0',
@@ -13,6 +18,20 @@ express.response.sendWrapped = function(obj) {
 };
 
 var app = express();
+
+// Mongoose models
+var Product = require('./models/productModel');
+var SellingItem = require('./models/sellingItemModel');
+var Selling = require('./models/sellingModel');
+var Client = require('./models/clientModel');
+var Setting = require('./models/settingModel');
+
+// Routers
+var configRouter = require('./routes/configRoutes')(Setting);
+var productRouter = require('./routes/productRoutes')(Product);
+var sellingItemRouter = require('./routes/sellingItemRoutes')(SellingItem);
+var sellingRouter = require('./routes/sellingRoutes')(Selling);
+var clientRouter = require('./routes/clientRoutes')(Client);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -42,9 +61,15 @@ app.use(function (req, res, next) {
 });
 
 app.get('/', function(req, res) {
-    //res.sendFile('./index.html',{root: __dirname });
-    res.send(process.env.TUNARI_DB || "No db connection string"); 
+    res.sendFile('./index.html',{root: __dirname });
+    //res.send(process.env.TUNARI_DB || "No db connection string"); 
 });
+
+app.use('/api/settings', configRouter);
+app.use('/api/products', productRouter);
+app.use('/api/sellingItems', sellingItemRouter);
+app.use('/api/sellings', sellingRouter);
+app.use('/api/clients', clientRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

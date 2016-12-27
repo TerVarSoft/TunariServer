@@ -6,6 +6,7 @@ public/*
 !public/images/
 data/
 config/local.env.js
+local.env.js
 
 
 #Other
