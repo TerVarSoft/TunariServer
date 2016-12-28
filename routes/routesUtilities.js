@@ -1,9 +1,12 @@
 var _ = require('lodash');
+var logger = require('./../logger/logger');
 
 var buildQuery = function(requestQuery){
 	
 	var query = requestQuery;
 	var nameRangeSeparator = ";";
+	var nameRanges = [];
+	var excludeProductNames = [];
 	
 	if(query.querySort){
 			query[query.querySort] = {
@@ -22,15 +25,9 @@ var buildQuery = function(requestQuery){
 		});
 
 		if(nameRangeKey){
-			var nameRanges = nameRangeKey.split(nameRangeSeparator);
-			query.name = {
-			    $gte: nameRanges[0].toUpperCase(),
-			    $lte: nameRanges[1].toUpperCase(),
-					$exists: true,
-					$ne: null
-		  	}
-		}
-
+				nameRanges = nameRangeKey.split(nameRangeSeparator);
+		}				
+		
 		// Tags Filtering
 		tagsString = _.reject(tagsString, function(tag){
 			return _.includes(tag, nameRangeSeparator)
@@ -52,6 +49,11 @@ var buildQuery = function(requestQuery){
 		}			
 	}
 
+	// Products Exclude
+	if(query.excludeProductNames) {			
+			excludeProductNames = query.excludeProductNames.split(',');			
+	}
+
 	if(query.maxQuantity){
 			query.quantity = {
 					$lte: +query.maxQuantity, 
@@ -60,7 +62,15 @@ var buildQuery = function(requestQuery){
 			};
 	}
 
-	query = _.omit(query, ['querySort', 'queryLimit', 'page', 'maxQuantity', 'properties']);
+	query.name = {
+			$gte: nameRanges[0] ? nameRanges[0].toUpperCase() :  "",
+			$lte: nameRanges[1] ? nameRanges[1].toUpperCase() :  "zzzzzzzzzzzzzzzz",
+			$exists: true,
+			$ne: null,
+			$nin: excludeProductNames
+	}
+
+	query = _.omit(query, ['querySort', 'queryLimit', 'page', 'maxQuantity', 'properties', 'excludeProductNames']);
 	
 	return query;
 }
