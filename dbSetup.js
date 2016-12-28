@@ -14,6 +14,11 @@ db.settings.insert({
 });
 
 db.settings.insert({
+    key: "excludeListForStatistics",
+    value: ["MP-001"]
+});
+
+db.settings.insert({
     key: "productCategories",
     value: [
         {
