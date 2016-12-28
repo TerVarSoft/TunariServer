@@ -43,6 +43,9 @@ var productSchema = new Schema({
     buyingPrice: {
         type: price
     },
+	isFavorite: {
+		type: Boolean
+	},
     locations: [location],
 	prices: [price],
 	properties: {}
