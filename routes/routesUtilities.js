@@ -5,6 +5,13 @@ var buildQuery = function(requestQuery){
 	var query = requestQuery;
 	var nameRangeSeparator = ";";
 	
+	if(query.querySort){
+			query[query.querySort] = {
+				$exists: true,
+				 $ne: null
+			};
+	}
+
 	if (query.tags) {
 		var tagsString = requestQuery.tags.split(" ");        
 		var tagsRegExp = [];
@@ -18,7 +25,9 @@ var buildQuery = function(requestQuery){
 			var nameRanges = nameRangeKey.split(nameRangeSeparator);
 			query.name = {
 			    $gte: nameRanges[0].toUpperCase(),
-			    $lte: nameRanges[1].toUpperCase()
+			    $lte: nameRanges[1].toUpperCase(),
+					$exists: true,
+					$ne: null
 		  	}
 		}
 
@@ -32,7 +41,11 @@ var buildQuery = function(requestQuery){
 		}
 		
 		if(tagsRegExp.length > 0) {
-			query.tags = {$all:tagsRegExp};
+			query.tags = {
+				$all:tagsRegExp, 
+				$exists: true,
+				$ne: null
+			};
 		}
 		else{
 			query = _.omit(query, ['tags']);
@@ -40,7 +53,11 @@ var buildQuery = function(requestQuery){
 	}
 
 	if(query.maxQuantity){
-		query.quantity = {$lte: +query.maxQuantity};
+			query.quantity = {
+					$lte: +query.maxQuantity, 
+					$exists: true,
+					$ne: null
+			};
 	}
 
 	query = _.omit(query, ['querySort', 'queryLimit', 'page', 'maxQuantity', 'properties']);
