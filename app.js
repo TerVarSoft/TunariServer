@@ -25,8 +25,10 @@ var SellingItem = require('./models/sellingItemModel');
 var Selling = require('./models/sellingModel');
 var Client = require('./models/clientModel');
 var Setting = require('./models/settingModel');
+var User = require('./models/userModel');
 
 // Routers
+var registerRouter = require('./routes/registerRoutes')(User);
 var configRouter = require('./routes/configRoutes')(Setting);
 var productRouter = require('./routes/productRoutes')(Product);
 var sellingItemRouter = require('./routes/sellingItemRoutes')(SellingItem);
@@ -65,6 +67,7 @@ app.get('/', function(req, res) {
     //res.send(process.env.TUNARI_DB || "No db connection string"); 
 });
 
+app.use('/api/register', registerRouter);
 app.use('/api/settings', configRouter);
 app.use('/api/products', productRouter);
 app.use('/api/sellingItems', sellingItemRouter);
