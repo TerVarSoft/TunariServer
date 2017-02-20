@@ -4,6 +4,7 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var jwt = require('jwt-simple');
 
 // Mongo 
 var mongo = require('mongodb');
@@ -73,6 +74,39 @@ app.use('/api/products', productRouter);
 app.use('/api/sellingItems', sellingItemRouter);
 app.use('/api/sellings', sellingRouter);
 app.use('/api/clients', clientRouter);
+
+
+
+app.use(function(req, res, next) {
+
+  if(!req.headers.authorization) {
+    return res.status(401).send({
+      message: "You are not authorized"
+    })
+  }
+  else {  
+    var token = req.headers.authorization.split(' ')[1];
+    var payload = jwt.decode(token, "tunariSecret");
+
+    if(!payload.sub) {
+      return res.status(401).send({
+        message: "Authentication failed"
+      });
+    } else {
+      next();
+    }     
+  }  
+});
+
+var people = [
+  'Mirko',
+  'Chalo',
+  'Damaris'
+]; 
+
+app.get('/api/people', function(req, res) {
+  return res.json(people);
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
