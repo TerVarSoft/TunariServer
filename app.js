@@ -4,6 +4,7 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var jwt = require('jwt-simple');
 
 // Mongo 
 var mongo = require('mongodb');
@@ -29,6 +30,7 @@ var User = require('./models/userModel');
 
 // Routers
 var registerRouter = require('./routes/registerRoutes')(User);
+var loginRouter = require('./routes/loginRoutes')(User);
 var configRouter = require('./routes/configRoutes')(Setting);
 var productRouter = require('./routes/productRoutes')(Product);
 var sellingItemRouter = require('./routes/sellingItemRoutes')(SellingItem);
@@ -59,12 +61,45 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Credentials', true);
 
     // Pass to next layer of middleware
-    next();
+     if (req.method == 'OPTIONS') {
+        res.status(200).end();
+    } else {
+        next();
+    }
 });
 
 app.get('/', function(req, res) {
     res.sendFile('./index.html',{root: __dirname });
     //res.send(process.env.TUNARI_DB || "No db connection string"); 
+});
+
+app.use('/api/login', loginRouter);
+
+app.use(function(req, res, next) {
+  if(!req.headers.authorization) {
+    return res.status(401).send({
+      message: "You are not authorized"
+    })
+  }
+  else {      
+    try {
+      var token = req.headers.authorization.split(' ')[1];
+      var payload = jwt.decode(token, process.env.TUNARI_SECRET);
+
+      if(!payload.sub) {
+        return res.status(401).send({ 
+          message: "Authentication failed"
+        });
+      } else {
+        next();
+      }  
+    } catch(err) {
+      console.log(err);
+      return res.status(401).send({ 
+        message: "Authentication failed"
+      });
+    }       
+  }  
 });
 
 app.use('/api/register', registerRouter);

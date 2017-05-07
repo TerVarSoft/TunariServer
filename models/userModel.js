@@ -25,9 +25,9 @@ userSchema.methods.removePassword = function() {
   return user;
 }
 
-// the schema is useless so far
-// we need to create a model using it
-var User = mongoose.model('User', userSchema);
+userSchema.methods.comparePasswords = function(password, callback) {
+  bcrypt.compare(password, this.password, callback);
+}
 
 userSchema.pre('save', function(next) {
   var user = this;
@@ -45,6 +45,10 @@ userSchema.pre('save', function(next) {
     })
   })
 });
+
+// the schema is useless so far
+// we need to create a model using it
+var User = mongoose.model('User', userSchema);
 
 // make this available to our users in our Node applications
 module.exports = User;
