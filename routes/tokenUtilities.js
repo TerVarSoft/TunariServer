@@ -1,7 +1,16 @@
+var jwt = require('jwt-simple');
 
-
-var createToken = function(requestQuery){
+var createSendToken = function(user, res) {
+  var payload = {    
+    sub: user._id
+  };
   
-});
+  var token = jwt.encode(payload, process.env.TUNARI_SECRET);
 
-module.exports.createToken = createToken;
+  res.status(200).sendWrapped({
+    user: user.removePassword(),
+    token: token
+  });                  
+};
+
+module.exports.createSendToken = createSendToken;

@@ -1,7 +1,7 @@
 var express = require('express');
-var jwt = require('jwt-simple');
 
 var logger = require('./../logger/logger');
+var tokenUtilities = require('./tokenUtilities');
 
 var loginRouter = function(User){
   var router = express.Router();
@@ -12,11 +12,22 @@ var loginRouter = function(User){
 
       req.user = req.body;
 
-      User.findOne({userName: req.user.userName}, function(err, user) {
+      var searchUser = { userName: req.user.userName }; 
+      User.findOne(searchUser, function(err, user) {
         if(err) throw err;
+
+        if(!user) {
+          return res.status(401).send({message: 'Wrong email/password'});
+        }
 
         user.comparePasswords(req.user.password, function(err, isMatch) {
           if(err) throw err;
+
+          if(!isMatch) {
+            return res.status(401).send({message: 'Wrong email/password'});
+          } else {
+            tokenUtilities.createSendToken(user, res);
+          }            
         });
       });  
     });
