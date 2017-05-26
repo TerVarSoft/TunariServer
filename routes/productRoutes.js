@@ -1,6 +1,7 @@
 var express = require('express');
 var _ = require('underscore-node');
 var routesUtil = require('./routesUtilities');
+var tokenUtilities = require('./tokenUtilities');
 
 // Logger
 var logger = require('./../logger/logger');
@@ -17,6 +18,15 @@ var productRouter = function(Product){
             var queryLimit = +req.query.queryLimit || 30;
             var page = req.query.page || 1;
             var propertiesToSelect = req.query.properties;			
+
+            var userRole = tokenUtilities.getUserRole(req);
+
+            /** Filter properties based on user role */
+            if (userRole === "public") {
+                propertiesToSelect = ["name"];
+            } else if (userRole === "client") {
+                propertiesToSelect = ["name", "tags"];
+            }
             
             query = routesUtil.buildQuery(req.query);
 

@@ -86,7 +86,7 @@ app.use(function(req, res, next) {
       var token = req.headers.authorization.split(' ')[1];
       var payload = jwt.decode(token, process.env.TUNARI_SECRET);
 
-      if(!payload.sub) {
+      if(!payload.sub || !payload.sub.id || !payload.sub.role) {
         return res.status(401).send({ 
           message: "Authentication failed"
         });
