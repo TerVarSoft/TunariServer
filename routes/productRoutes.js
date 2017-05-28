@@ -23,9 +23,9 @@ var productRouter = function(Product){
 
             /** Filter properties based on user role */
             if (userRole === "public") {
-                propertiesToSelect = ["name"];
+                propertiesToSelect = "name category properties.type publicPrices";
             } else if (userRole === "client") {
-                propertiesToSelect = ["name", "tags"];
+                propertiesToSelect = "name category properties.type publicPrices clientPrices";
             }
             
             query = routesUtil.buildQuery(req.query);
@@ -131,7 +131,8 @@ var productRouter = function(Product){
             req.product.images = req.body.images;
             req.product.properties = req.body.properties;
             req.product.buyingPrice = req.body.buyingPrice;
-            req.product.prices = req.body.prices;
+            req.product.publicPrices = req.body.publicPrices;
+            req.product.clientPrices = req.body.clientPrices;
             req.product.imageUrl = req.body.imageUrl;
             req.product.provider = req.body.provider;
             req.product.quantity = req.body.quantity;

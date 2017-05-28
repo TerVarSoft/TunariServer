@@ -47,7 +47,8 @@ var productSchema = new Schema({
 		type: Boolean
 	},
     locations: [location],
-	prices: [price],
+	publicPrices: [price],
+	clientPrices: [price],
 	properties: {}
 });
 
