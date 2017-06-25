@@ -166,6 +166,7 @@ var productRouter = function(Product){
             req.product.clientPackagePrice = req.body.clientPackagePrice;
             req.product.buyingUnitPrice = req.body.buyingUnitPrice;
             req.product.buyingPackagePrice = req.body.buyingPackagePrice;
+            req.product.quantityPerPackage = req.body.quantityPerPackage;
             req.product.imageUrl = req.body.imageUrl;
             req.product.provider = req.body.provider;
             req.product.quantity = req.body.quantity;
