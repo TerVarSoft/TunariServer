@@ -29,7 +29,7 @@ var Setting = require('./models/settingModel');
 var User = require('./models/userModel');
 
 // Routers
-var registerRouter = require('./routes/registerRoutes')(User);
+var userRouter = require('./routes/userRoutes')(User);
 var loginRouter = require('./routes/loginRoutes')(User);
 var configRouter = require('./routes/configRoutes')(Setting);
 var productRouter = require('./routes/productRoutes')(Product);
@@ -102,7 +102,7 @@ app.use(function(req, res, next) {
   }  
 });
 
-app.use('/api/register', registerRouter);
+app.use('/api/users', userRouter);
 app.use('/api/settings', configRouter);
 app.use('/api/products', productRouter);
 app.use('/api/sellingItems', sellingItemRouter);

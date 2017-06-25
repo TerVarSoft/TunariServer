@@ -57,11 +57,10 @@ var productRouter = function(Product){
                 .select(propertiesToSelect)
             });
 		})
-		.post(function(req, res, next) {
-            
-            var userRole = tokenUtilities.getUserRole(req);
-            if (userRole !== "admin") {
+		.post(function(req, res, next) {            
+            if (!tokenUtilities.isAdmin(req)) {
                 res.status(401).send(needToBeAdminMessage);
+                return;
             }
             
 			var newProduct = new Product(req.body);      
@@ -147,9 +146,9 @@ var productRouter = function(Product){
             res.sendWrapped(req.product);
         })        
         .put(function(req, res){ 
-            var userRole = tokenUtilities.getUserRole(req);
-            if (userRole !== "admin") {
+            if (!tokenUtilities.isAdmin(req)) {
                 res.status(401).send(needToBeAdminMessage);
+                return;
             }
             
             req.body.name = _.toUpper(req.body.name)
@@ -185,9 +184,9 @@ var productRouter = function(Product){
             });                                        
         })
         .patch(function(req, res) {
-            var userRole = tokenUtilities.getUserRole(req);
-            if (userRole !== "admin") {
+            if (!tokenUtilities.isAdmin(req)) {
                 res.status(401).send(needToBeAdminMessage);
+                return;
             }
 
             if(req.body._id)
@@ -205,9 +204,9 @@ var productRouter = function(Product){
             });
         })
         .delete(function(req, res) {
-            var userRole = tokenUtilities.getUserRole(req);
-            if (userRole !== "admin") {
+            if (!tokenUtilities.isAdmin(req)) {
                 res.status(401).send(needToBeAdminMessage);
+                return;
             }
 
             req.product.remove(function(err){
@@ -218,8 +217,7 @@ var productRouter = function(Product){
                 }                
             });        
         });
-    
-    
+
 	return router
 }
 

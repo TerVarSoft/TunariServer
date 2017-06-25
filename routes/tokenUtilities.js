@@ -36,8 +36,14 @@ var getUserRole = function(req) {
       console.log(err);
       return public;
     }       
-  }                 
+  }
 };
+
+var isAdmin = function(req) {
+  var userRole = getUserRole(req);
+  return userRole === "admin";  
+}
 
 module.exports.createSendToken = createSendToken;
 module.exports.getUserRole = getUserRole;
+module.exports.isAdmin = isAdmin;
