@@ -1,10 +1,16 @@
 var express = require('express');
-var _ = require('underscore-node');
+var _ = require('lodash');
 var routesUtil = require('./routesUtilities');
 var tokenUtilities = require('./tokenUtilities');
+var productUtil = require('./productUtilities');
 
 // Logger
 var logger = require('./../logger/logger');
+
+var publicProductProperties = "name category properties.type publicUnitPrice publicPackagePrice";
+var clientProductProperties = "name category properties.type publicUnitPrice publicPackagePrice " +
+                     "clientUnitPrice clientPackagePrice";
+var needToBeAdminMessage = "Need to be admin to perform this action";
 
 var productRouter = function(Product){
 	var router = express.Router();
@@ -23,10 +29,9 @@ var productRouter = function(Product){
 
             /** Filter properties based on user role */
             if (userRole === "public") {
-                propertiesToSelect = "name category properties.type publicUnitPrice publicPackagePrice";
+                propertiesToSelect = publicProductProperties;
             } else if (userRole === "client") {
-                propertiesToSelect = "name category properties.type publicUnitPrice publicPackagePrice " +
-                     "clientUnitPrice clientPackagePrice";
+                propertiesToSelect = clientProductProperties;
             }
             
             query = routesUtil.buildQuery(req.query);
@@ -53,8 +58,16 @@ var productRouter = function(Product){
             });
 		})
 		.post(function(req, res, next) {
-
-			var newProduct = new Product(req.body);
+            
+            var userRole = tokenUtilities.getUserRole(req);
+            if (userRole !== "admin") {
+                res.status(401).send(needToBeAdminMessage);
+            }
+            
+			var newProduct = new Product(req.body);      
+            newProduct.name = _.toUpper(newProduct.name);            
+            newProduct.sortTag = productUtil.getSortTag(newProduct);
+            newProduct.tags = productUtil.getProductTags({}, newProduct, newProduct.tags);
 
 			newProduct.save(function(err) {
 				if (err) {
@@ -105,10 +118,11 @@ var productRouter = function(Product){
         }); 
     
     
-    router.use('/:productId', function(req, res, next){
+    router.use('/:productId', function(req, res, next) {
+
         Product.findById(req.params.productId, function(err, product){
             if(err)
-                res.status(500).send(er);
+                res.status(500).send(err);
             else if(product){
                 req.product = product;
                 next();
@@ -121,14 +135,30 @@ var productRouter = function(Product){
     
     router.route('/:productId')
         .get(function(req, res){
+            var userRole = tokenUtilities.getUserRole(req);
+
+            /** Filter properties based on user role */
+            if (userRole === "public") {
+                propertiesToSelect = publicProductProperties;
+            } else if (userRole === "client") {
+                propertiesToSelect = clientProductProperties;
+            }
+
             res.sendWrapped(req.product);
         })        
         .put(function(req, res){ 
+            var userRole = tokenUtilities.getUserRole(req);
+            if (userRole !== "admin") {
+                res.status(401).send(needToBeAdminMessage);
+            }
+            
+            req.body.name = _.toUpper(req.body.name)
+            req.product.sortTag = productUtil.getSortTag(req.body);
+            req.product.tags = productUtil.getProductTags(req.product, req.body, req.body.tags);
+            
             req.product.name = req.body.name;
             req.product.price = req.body.price;
             req.product.category = req.body.category;
-            req.product.sortTag = req.body.sortTag;
-            req.product.tags = req.body.tags;
             req.product.images = req.body.images;
             req.product.properties = req.body.properties;            
             req.product.publicUnitPrice = req.body.publicUnitPrice;
@@ -154,7 +184,12 @@ var productRouter = function(Product){
                 }
             });                                        
         })
-        .patch(function(req, res){ 
+        .patch(function(req, res) {
+            var userRole = tokenUtilities.getUserRole(req);
+            if (userRole !== "admin") {
+                res.status(401).send(needToBeAdminMessage);
+            }
+
             if(req.body._id)
                 delete req.body._id;
         
@@ -165,16 +200,21 @@ var productRouter = function(Product){
                 if(err)
                     res.status(500).send(err);
                 else{
-                    res.json(req.product);                    
+                    res.json(req.product);
                 }
             });
         })
-        .delete(function(req, res){
+        .delete(function(req, res) {
+            var userRole = tokenUtilities.getUserRole(req);
+            if (userRole !== "admin") {
+                res.status(401).send(needToBeAdminMessage);
+            }
+
             req.product.remove(function(err){
                 if(err)
                     res.status(500).send(err);
                 else{
-                    res.status(204).send('Removed');                    
+                    res.status(204).send('Removed'); 
                 }                
             });        
         });
