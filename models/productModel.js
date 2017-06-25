@@ -37,16 +37,21 @@ var productSchema = new Schema({
     quantity: {
         type: Number
     },
+	quantityPerPackage: Number,
     provider: {
         type: String
-    },
-    buyingPrice: {
-        type: price
     },
 	isFavorite: {
 		type: Boolean
 	},
     locations: [location],
+	clientUnitPrice: Number,
+	clientPackagePrice: Number,
+	publicUnitPrice: Number,
+	publicPackagePrice: Number,
+	buyingUnitPrice: Number,
+	buyingPackagePrice: Number,
+	otherPrices: [price],
 	publicPrices: [price],
 	clientPrices: [price],
 	properties: {}
