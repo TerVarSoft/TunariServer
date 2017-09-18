@@ -108,7 +108,7 @@ var productRouter = function(Product){
                             'product:' + product.name + ' ' +
                             'sortTag:' + product.sortTag + ' ' +
                             'clientPackagePrice:' + (product.clientPackagePrice ? product.clientPackagePrice  : 0) + ' ' +
-                            'wareHouseQuantity:' + product.quantity);
+                            'wareHouseQuantity:' + (product.quantity ? product.quantity : 0));
                     });
                     logger.log('info','Finished products Logging');
                     
