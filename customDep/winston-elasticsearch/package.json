@@ -1,0 +1,133 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "winston-elasticsearch",
+        "scope": null,
+        "escapedName": "winston-elasticsearch",
+        "name": "winston-elasticsearch",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "e:\\TerVarSoft\\Projects\\TunariServer"
+    ]
+  ],
+  "_from": "winston-elasticsearch@latest",
+  "_id": "winston-elasticsearch@0.5.0",
+  "_inCache": true,
+  "_location": "/winston-elasticsearch",
+  "_nodeVersion": "7.1.0",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/winston-elasticsearch-0.5.0.tgz_1486111976527_0.9195068390108645"
+  },
+  "_npmUser": {
+    "name": "nfuse",
+    "email": "info@n-fuse.de"
+  },
+  "_npmVersion": "4.0.2",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "winston-elasticsearch",
+    "scope": null,
+    "escapedName": "winston-elasticsearch",
+    "name": "winston-elasticsearch",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/winston-elasticsearch/-/winston-elasticsearch-0.5.0.tgz",
+  "_shasum": "77aad5921041fea77ee9f1f7774ebf72e7bccaf2",
+  "_shrinkwrap": null,
+  "_spec": "winston-elasticsearch",
+  "_where": "e:\\TerVarSoft\\Projects\\TunariServer",
+  "authors": [
+    {
+      "name": "Jacques-Olivier D. Bernier",
+      "url": "https://github.com/jackdbernier"
+    },
+    {
+      "name": "Thomas Hoppe",
+      "url": "https://github.com/vanthome",
+      "email": "thomas.hoppe@n-fuse.de"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/vanthome/winston-elasticsearch/issues"
+  },
+  "contributors": [
+    {
+      "name": "Andy Potanin",
+      "url": "https://github.com/andypotanin"
+    }
+  ],
+  "dependencies": {
+    "debug": "^2.4.4",
+    "elasticsearch": "^12.1.3",
+    "lodash": "^4.17.2",
+    "moment": "^2.17.1",
+    "promise": "^7.1.1",
+    "retry": "^0.10.1",
+    "winston": "^2.3.0"
+  },
+  "description": "An Elasticsearch transport for winston",
+  "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "coveralls": "^2.11.15",
+    "eslint": "^3.12.2",
+    "eslint-config-airbnb-base": "^11.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-json": "^1.2.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0",
+    "should": "^11.1.2"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "77aad5921041fea77ee9f1f7774ebf72e7bccaf2",
+    "tarball": "https://registry.npmjs.org/winston-elasticsearch/-/winston-elasticsearch-0.5.0.tgz"
+  },
+  "engines": {
+    "node": ">= 6.0.0"
+  },
+  "gitHead": "1909c20f64bc41eb4d665b63289522f547f56057",
+  "homepage": "https://github.com/vanthome/winston-elasticsearch#readme",
+  "keywords": [
+    "logging",
+    "winston",
+    "elasticsearch",
+    "transport",
+    "logstash"
+  ],
+  "license": "MIT",
+  "main": "index",
+  "maintainers": [
+    {
+      "name": "nfuse",
+      "email": "info@n-fuse.de"
+    },
+    {
+      "name": "vanthome",
+      "email": "thomas.hoppe@n-fuse.de"
+    }
+  ],
+  "name": "winston-elasticsearch",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/vanthome/winston-elasticsearch.git"
+  },
+  "scripts": {
+    "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec ./test/*",
+    "lint": "eslint *.json *.js",
+    "mocha": "mocha ./test/*",
+    "test": "npm run lint && npm run mocha"
+  },
+  "version": "0.5.0"
+}

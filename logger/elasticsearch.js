@@ -1,7 +1,6 @@
-
 // Winston
 var winston = require('winston');
-var Elasticsearch = require('winston-elasticsearch');
+var Elasticsearch = require('./../customDep/winston-elasticsearch');
 var elasticsearch = require('elasticsearch');
 
 var config = {

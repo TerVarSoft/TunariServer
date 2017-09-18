@@ -100,16 +100,16 @@ var productRouter = function (Product) {
                     throw err;
                 }
                 else {
-
+                    console.log('Sending products information to elasticsearch server')
                     _.each(products, function (product) {
-                        elastic.log('info', '', {
+                        elastic.log('info', product._id, {
                             id: product._id,
                             tipo: product.properties.type,
                             producto: product.name,
                             etiquetaBusqueda: product.sortTag,
                             cantidad: (product.quantity ? product.quantity : 0),
                             precioPaqueteCliente: (product.clientPackagePrice ? product.clientPackagePrice : 0)
-                        });
+                        }, ()=>{});
                     });
 
                     res.status(200).send('Products logged');
