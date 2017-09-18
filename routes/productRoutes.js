@@ -93,7 +93,7 @@ var productRouter = function(Product){
     router.route('/log')
         .get(function (req, res, next) {
         
-            Product.find({}, function(err, products) {
+            Product.find({category: 'Invitaciones'}, function(err, products) {
 				if (err) {
 					logger.log('error',err);
 					throw err;
@@ -104,7 +104,10 @@ var productRouter = function(Product){
                     _.each(products, function(product){
                         logger.log('info',
                             'productId:' + product._id + ' ' +
+                            'type:' + product.properties.type + ' ' +
                             'product:' + product.name + ' ' +
+                            'sortTag:' + product.sortTag + ' ' +
+                            'clientPackagePrice:' + (product.clientPackagePrice ? product.clientPackagePrice  : 0) + ' ' +
                             'wareHouseQuantity:' + product.quantity);
                     });
                     logger.log('info','Finished products Logging');
