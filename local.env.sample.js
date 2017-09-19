@@ -7,5 +7,6 @@
 process.env['NODE_ENV'] = "development"
 process.env['TUNARI_DB'] = "mongodb://localhost/tunariDB-dev"
 process.env['logDir'] = "./log";
+process.env['BONSAI_URL'] = "http://localhost:9200";
 process.env['TUNARI_SECRET'] = "tunariSecret";
 process.env['PORT'] = 8000;

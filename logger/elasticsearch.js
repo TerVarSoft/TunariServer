@@ -3,8 +3,8 @@ var winston = require('winston');
 var Elasticsearch = require('./../customDep/winston-elasticsearch');
 var elasticsearch = require('elasticsearch');
 
-var config = {
-  host: 'http://8e4884e8.ngrok.io:80',
+var config = {  
+  host: process.env.BONSAI_URL
 };
 var es1 = new elasticsearch.Client(config);
 
