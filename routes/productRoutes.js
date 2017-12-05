@@ -1,4 +1,5 @@
 var express = require('express');
+var cloudinary = require('cloudinary');
 var _ = require('lodash');
 var routesUtil = require('./routesUtilities');
 var tokenUtilities = require('./tokenUtilities');
@@ -7,6 +8,13 @@ var productUtil = require('./productUtilities');
 // Logger
 var logger = require('./../logger/logger');
 var elastic = require('./../logger/elasticsearch');
+
+// Cloudinary
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 var publicProductProperties = "name category properties.type publicUnitPrice publicPackagePrice";
 var clientProductProperties = "name category properties.type publicUnitPrice publicPackagePrice " +
@@ -44,6 +52,13 @@ var productRouter = function (Product) {
                         logger.log('error', err);
                         throw err;
                     }
+
+                    _.each(products, function (product) {
+
+                        var imageFolder = product.properties.type || product.category;
+                        product.imageUrl = cloudinary.url(imageFolder + "/" + product.name + ".jpg", 
+                            {type: 'private', sign_url: true, secure: true});
+                    });
 
                     res.status(200).sendWrapped({
                         meta: {
@@ -109,7 +124,7 @@ var productRouter = function (Product) {
                             etiquetaBusqueda: product.sortTag,
                             cantidad: (product.quantity ? product.quantity : 0),
                             precioPaqueteCliente: (product.clientPackagePrice ? product.clientPackagePrice : 0)
-                        }, ()=>{});
+                        }, () => { });
                     });
 
                     res.status(200).send('Products logged');
