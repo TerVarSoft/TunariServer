@@ -56,8 +56,10 @@ var productRouter = function (Product) {
                     _.each(products, function (product) {
 
                         var imageFolder = product.properties.type || product.category;
-                        product.imageUrl = cloudinary.url(imageFolder + "/" + product.name + ".jpg", 
-                            {type: 'private', sign_url: true, secure: true});
+                        product.imageUrl = cloudinary.url(imageFolder + "/" + product.name + ".jpg",
+                            { type: 'private', sign_url: true, secure: true });
+                        product.thumbnailUrl = cloudinary.url(imageFolder + "/" + product.name + ".jpg",
+                            { type: 'private', sign_url: true, secure: true, width:150, height:100 });
                     });
 
                     res.status(200).sendWrapped({
@@ -137,29 +139,36 @@ var productRouter = function (Product) {
 
     router.use('/:productId', function (req, res, next) {
 
+        var userRole = tokenUtilities.getUserRole(req);
+
+        /** Filter properties based on user role */
+        if (userRole === "public") {
+            propertiesToSelect = publicProductProperties;
+        } else if (userRole === "client") {
+            propertiesToSelect = clientProductProperties;
+        }
+
         Product.findById(req.params.productId, function (err, product) {
             if (err)
                 res.status(500).send(err);
             else if (product) {
+                var imageFolder = product.properties.type || product.category;
+                product.imageUrl = cloudinary.url(imageFolder + "/" + product.name + ".jpg",
+                    { type: 'private', sign_url: true, secure: true });
+                product.thumbnailUrl = cloudinary.url(imageFolder + "/" + product.name + ".jpg",
+                    { type: 'private', sign_url: true, secure: true, width:150, height:100 });
+
                 req.product = product;
                 next();
             }
             else {
                 res.status(404).send('no product found');
             }
-        });
+        }).select(propertiesToSelect);
     });
 
     router.route('/:productId')
         .get(function (req, res) {
-            var userRole = tokenUtilities.getUserRole(req);
-
-            /** Filter properties based on user role */
-            if (userRole === "public") {
-                propertiesToSelect = publicProductProperties;
-            } else if (userRole === "client") {
-                propertiesToSelect = clientProductProperties;
-            }
 
             res.sendWrapped(req.product);
         })

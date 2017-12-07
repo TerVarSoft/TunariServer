@@ -33,7 +33,10 @@ var productSchema = new Schema({
 	},
 	imageUrl : {
 		type: String
-	}, 
+	},
+	thumbnailUrl : {
+		type: String
+	},
     quantity: {
         type: Number
     },
