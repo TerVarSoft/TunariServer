@@ -59,7 +59,7 @@ var productRouter = function (Product) {
                         product.imageUrl = cloudinary.url(imageFolder + "/" + product.name + ".jpg",
                             { type: 'private', sign_url: true, secure: true });
                         product.thumbnailUrl = cloudinary.url(imageFolder + "/" + product.name + ".jpg",
-                            { type: 'private', sign_url: true, secure: true, width:150, height:100 });
+                            { type: 'private', sign_url: true, secure: true, width:150, height:100, crop: "fit" });
                     });
 
                     res.status(200).sendWrapped({
@@ -156,7 +156,7 @@ var productRouter = function (Product) {
                 product.imageUrl = cloudinary.url(imageFolder + "/" + product.name + ".jpg",
                     { type: 'private', sign_url: true, secure: true });
                 product.thumbnailUrl = cloudinary.url(imageFolder + "/" + product.name + ".jpg",
-                    { type: 'private', sign_url: true, secure: true, width:150, height:100 });
+                    { type: 'private', sign_url: true, secure: true, width:150, height:100, crop: "fit" });
 
                 req.product = product;
                 next();
