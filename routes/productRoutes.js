@@ -55,7 +55,7 @@ var productRouter = function (Product) {
 
                     _.each(products, function (product) {
 
-                        var imageFolder = product.properties.type || product.category;
+                        var imageFolder = (product.properties && product.properties.type) || product.category;
                         product.imageUrl = cloudinary.url(imageFolder + "/" + product.name + ".jpg",
                             { type: 'private', sign_url: true, secure: true });
                         product.thumbnailUrl = cloudinary.url(imageFolder + "/" + product.name + ".jpg",
@@ -69,7 +69,7 @@ var productRouter = function (Product) {
                         items: products
                     });
                 })
-                    .sort(querySort)
+                    .sort([[querySort, -1], ["sortTag", -1]])
                     .skip(queryLimit * (page - 1))
                     .limit(queryLimit)
                     .select(propertiesToSelect)
@@ -140,6 +140,7 @@ var productRouter = function (Product) {
     router.use('/:productId', function (req, res, next) {
 
         var userRole = tokenUtilities.getUserRole(req);
+        var propertiesToSelect = req.query.properties;
 
         /** Filter properties based on user role */
         if (userRole === "public") {
@@ -152,7 +153,7 @@ var productRouter = function (Product) {
             if (err)
                 res.status(500).send(err);
             else if (product) {
-                var imageFolder = product.properties.type || product.category;
+                var imageFolder = (product.properties && product.properties.type) || product.category;
                 product.imageUrl = cloudinary.url(imageFolder + "/" + product.name + ".jpg",
                     { type: 'private', sign_url: true, secure: true });
                 product.thumbnailUrl = cloudinary.url(imageFolder + "/" + product.name + ".jpg",

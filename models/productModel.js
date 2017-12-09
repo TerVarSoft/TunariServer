@@ -58,6 +58,8 @@ var productSchema = new Schema({
 	publicPrices: [price],
 	clientPrices: [price],
 	properties: {}
+}, {
+    timestamps: true
 });
 
 // the schema is useless so far
