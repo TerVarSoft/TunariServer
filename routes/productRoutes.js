@@ -85,7 +85,7 @@ var productRouter = function (Product) {
             newProduct.name = _.toUpper(newProduct.name);
             newProduct.sortTag = productUtil.getSortTag(newProduct);
             newProduct.tags = productUtil.getProductTags({}, newProduct, newProduct.tags);
-            newProduct.imageExtension = newProduct.imageExtension || "png";
+            newProduct.imageExtension = newProduct.imageExtension || "jpg";
 
             newProduct.save(function (err) {
                 if (err) {
