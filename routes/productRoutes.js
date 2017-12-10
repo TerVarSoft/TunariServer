@@ -56,9 +56,9 @@ var productRouter = function (Product) {
                     _.each(products, function (product) {
 
                         var imageFolder = (product.properties && product.properties.type) || product.category;
-                        product.imageUrl = cloudinary.url(imageFolder + "/" + product.name + ".jpg",
+                        product.imageUrl = cloudinary.url(imageFolder + "/" + product.name + "." + product.imageExtension,
                             { type: 'private', sign_url: true, secure: true });
-                        product.thumbnailUrl = cloudinary.url(imageFolder + "/" + product.name + ".jpg",
+                        product.thumbnailUrl = cloudinary.url(imageFolder + "/" + product.name + "." + product.imageExtension,
                             { type: 'private', sign_url: true, secure: true, width:150, height:100, crop: "fit" });
                     });
 
@@ -85,6 +85,7 @@ var productRouter = function (Product) {
             newProduct.name = _.toUpper(newProduct.name);
             newProduct.sortTag = productUtil.getSortTag(newProduct);
             newProduct.tags = productUtil.getProductTags({}, newProduct, newProduct.tags);
+            newProduct.imageExtension = newProduct.imageExtension || "png";
 
             newProduct.save(function (err) {
                 if (err) {
@@ -154,9 +155,9 @@ var productRouter = function (Product) {
                 res.status(500).send(err);
             else if (product) {
                 var imageFolder = (product.properties && product.properties.type) || product.category;
-                product.imageUrl = cloudinary.url(imageFolder + "/" + product.name + ".jpg",
+                product.imageUrl = cloudinary.url(imageFolder + "/" + product.name + "." + product.imageExtension,
                     { type: 'private', sign_url: true, secure: true });
-                product.thumbnailUrl = cloudinary.url(imageFolder + "/" + product.name + ".jpg",
+                product.thumbnailUrl = cloudinary.url(imageFolder + "/" + product.name + "." + product.imageExtension,
                     { type: 'private', sign_url: true, secure: true, width:150, height:100, crop: "fit" });
 
                 req.product = product;
@@ -195,7 +196,7 @@ var productRouter = function (Product) {
             req.product.buyingUnitPrice = req.body.buyingUnitPrice;
             req.product.buyingPackagePrice = req.body.buyingPackagePrice;
             req.product.quantityPerPackage = req.body.quantityPerPackage;
-            req.product.imageUrl = req.body.imageUrl;
+            req.product.imageExtension = req.body.imageExtension;
             req.product.provider = req.body.provider;
             req.product.quantity = req.body.quantity;
             req.product.locations = req.body.locations;
