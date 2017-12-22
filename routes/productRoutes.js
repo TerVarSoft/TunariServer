@@ -56,8 +56,13 @@ var productRouter = function (Product) {
                     _.each(products, function (product) {
 
                         var imageFolder = (product.properties && product.properties.type) || product.category;
-                        product.imageUrl = cloudinary.url(imageFolder + "/" + product.name + "." + product.imageExtension,
-                            { type: 'private', sign_url: true, secure: true });
+                        
+                        if (userRole === "admin") {
+                            product.imageUrl = cloudinary.url(imageFolder + "/" + product.name + "." + product.imageExtension,
+                                { type: 'private', sign_url: true, secure: true });
+                            product.previewUrl = cloudinary.url(imageFolder + "/" + product.name + "." + product.imageExtension,
+                                { type: 'private', sign_url: true, secure: true, width:450, height:300, crop: "fit" });
+                        }
                         product.thumbnailUrl = cloudinary.url(imageFolder + "/" + product.name + "." + product.imageExtension,
                             { type: 'private', sign_url: true, secure: true, width:150, height:100, crop: "fit" });
                     });
@@ -155,8 +160,13 @@ var productRouter = function (Product) {
                 res.status(500).send(err);
             else if (product) {
                 var imageFolder = (product.properties && product.properties.type) || product.category;
-                product.imageUrl = cloudinary.url(imageFolder + "/" + product.name + "." + product.imageExtension,
-                    { type: 'private', sign_url: true, secure: true });
+                
+                if (userRole === "admin") {
+                    product.imageUrl = cloudinary.url(imageFolder + "/" + product.name + "." + product.imageExtension,
+                        { type: 'private', sign_url: true, secure: true });
+                    product.previewUrl = cloudinary.url(imageFolder + "/" + product.name + "." + product.imageExtension,
+                        { type: 'private', sign_url: true, secure: true, width:450, height:300, crop: "fit" });
+                }
                 product.thumbnailUrl = cloudinary.url(imageFolder + "/" + product.name + "." + product.imageExtension,
                     { type: 'private', sign_url: true, secure: true, width:150, height:100, crop: "fit" });
 
