@@ -48,7 +48,7 @@ var getSortTag = function(product) {
 function getInvitationNumber(invitation) {
     var nameParts = invitation.name.split('-');
 
-    var lastElement = _.last(nameParts);
+    var lastElement = nameParts[1];
     var isNum = /^\d+$/.test(lastElement);
     var number = "";
 
