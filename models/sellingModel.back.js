@@ -1,20 +1,20 @@
 var mongoose = require('mongoose');
+var SellingItem = require('./sellingItemModel');
 
 var Schema = mongoose.Schema;
 
+
 // create a schema
 var sellingSchema = new Schema({
-    productName: {
-        type: String
+	sellingItems : [mongoose.model('SellingItem').schema],
+	client : [mongoose.model('Client').schema],
+    total : {
+        type: Number
     },
-    productType: {
-        type: String
+    revenue: {
+        type: Number
     },
-    quantity: {
-        type: String
-    }
-}, {
-    timestamps: true
+    date : Date,
 });
 
 // the schema is useless so far

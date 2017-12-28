@@ -30,6 +30,9 @@ var productRouter = function (Product) {
 
             var query = {};
             var querySort = req.query.querySort || 'sortTag';
+            querySort = [[querySort, -1], ["sortTag", -1]];
+            querySort = req.query.isLowQuantity ? [["quantity", 1], ["sortTag", -1]] : querySort;
+
             var queryLimit = +req.query.queryLimit || 30;
             var page = req.query.page || 1;
             var propertiesToSelect = req.query.properties;
@@ -74,7 +77,7 @@ var productRouter = function (Product) {
                         items: products
                     });
                 })
-                    .sort([[querySort, -1], ["sortTag", -1]])
+                    .sort(querySort)
                     .skip(queryLimit * (page - 1))
                     .limit(queryLimit)
                     .select(propertiesToSelect)

@@ -34,7 +34,7 @@ var loginRouter = require('./routes/loginRoutes')(User);
 var configRouter = require('./routes/configRoutes')(Setting);
 var productRouter = require('./routes/productRoutes')(Product);
 var sellingItemRouter = require('./routes/sellingItemRoutes')(SellingItem);
-var sellingRouter = require('./routes/sellingRoutes')(Selling);
+var sellingRouter = require('./routes/sellingRoutes')(Selling, Product);
 var clientRouter = require('./routes/clientRoutes')(Client);
 
 // view engine setup
@@ -105,7 +105,7 @@ app.use(function(req, res, next) {
 app.use('/api/users', userRouter);
 app.use('/api/settings', configRouter);
 app.use('/api/products', productRouter);
-app.use('/api/sellingItems', sellingItemRouter);
+//app.use('/api/sellingItems', sellingItemRouter);
 app.use('/api/sellings', sellingRouter);
 app.use('/api/clients', clientRouter);
 
