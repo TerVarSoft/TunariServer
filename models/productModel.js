@@ -63,6 +63,7 @@ var productSchema = new Schema({
 	otherPrices: [price],
 	publicPrices: [price],
 	clientPrices: [price],
+	prices: [],
 	properties: {}
 }, {
     timestamps: true

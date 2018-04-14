@@ -1,0 +1,204 @@
+{
+	"variables": [],
+	"info": {
+		"name": "TunariServer",
+		"_postman_id": "68c47fbd-cdf6-9b7d-34d7-47702a2cf1e5",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Tunari Get Settings",
+			"request": {
+				"url": "{{baseUrl}}/api/settings",
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOnsiaWQiOiI1OTBmMmJjNGNlMDIzYzAwMTEwMDgyNjYiLCJyb2xlIjoicHVibGljIn19._ZkehRUVgcAf1dRzmuDmfOc63fxqTpElWdq6qca6keo",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userName\": \"tunariTest\",\n\t\"password\": \"tunariTest\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Tunari Login",
+			"request": {
+				"url": "{{baseUrl}}/api/login",
+				"method": "POST",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOnsiaWQiOiI1OTBmMmJjNGNlMDIzYzAwMTEwMDgyNjYiLCJyb2xlIjoicHVibGljIn19._ZkehRUVgcAf1dRzmuDmfOc63fxqTpElWdq6qca6ke",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userName\": \"mirko\",\n\t\"password\": \"Msonitronik5\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Tunari Get Products",
+			"request": {
+				"url": "{{baseUrl}}/api/products",
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOnsiaWQiOiI1OTJhMTZhOTZlMjc0MjA1NGM0MGNjMmEiLCJyb2xlIjoiY2xpZW50In19.YEb1BWBm-NPWCHEEcQ2V0LdYkcoUM3NYncM-hpzkKLI",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOnsiaWQiOiI1OGE5YWUwNjA1YjAyMzJlYjA4NTkxNTkiLCJyb2xlIjoiYWRtaW4ifX0.-EeeOJ93GAIA1EJAnDnafYcOabMFs5zqk7wdAqSnHLk",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userName\": \"tunariTest\",\n\t\"password\": \"tunariTest\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Tunari Get Products LowQuantity",
+			"request": {
+				"url": {
+					"raw": "{{baseUrl}}/api/products?isLowQuantity=true",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"products"
+					],
+					"query": [
+						{
+							"key": "isLowQuantity",
+							"value": "true",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOnsiaWQiOiI1OTJhMTZhOTZlMjc0MjA1NGM0MGNjMmEiLCJyb2xlIjoiY2xpZW50In19.YEb1BWBm-NPWCHEEcQ2V0LdYkcoUM3NYncM-hpzkKLI",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOnsiaWQiOiI1OGE5YWUwNjA1YjAyMzJlYjA4NTkxNTkiLCJyb2xlIjoiYWRtaW4ifX0.-EeeOJ93GAIA1EJAnDnafYcOabMFs5zqk7wdAqSnHLk",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userName\": \"tunariTest\",\n\t\"password\": \"tunariTest\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Tunari Get Sellings",
+			"request": {
+				"url": "{{baseUrl}}/api/sellings",
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOnsiaWQiOiI1OTJhMTZhOTZlMjc0MjA1NGM0MGNjMmEiLCJyb2xlIjoiY2xpZW50In19.YEb1BWBm-NPWCHEEcQ2V0LdYkcoUM3NYncM-hpzkKLI",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOnsiaWQiOiI1OGE5YWUwNjA1YjAyMzJlYjA4NTkxNTkiLCJyb2xlIjoiYWRtaW4ifX0.-EeeOJ93GAIA1EJAnDnafYcOabMFs5zqk7wdAqSnHLk",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userName\": \"tunariTest\",\n\t\"password\": \"tunariTest\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Tunari Post Sellings",
+			"request": {
+				"url": "{{baseUrl}}/api/sellings",
+				"method": "POST",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOnsiaWQiOiI1OTJhMTZhOTZlMjc0MjA1NGM0MGNjMmEiLCJyb2xlIjoiY2xpZW50In19.YEb1BWBm-NPWCHEEcQ2V0LdYkcoUM3NYncM-hpzkKLI",
+						"description": "",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOnsiaWQiOiI1OGE5YWUwNjA1YjAyMzJlYjA4NTkxNTkiLCJyb2xlIjoiYWRtaW4ifX0.-EeeOJ93GAIA1EJAnDnafYcOabMFs5zqk7wdAqSnHLk",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"productName\": \"VSV-081\",\n\t\"productType\": \"Virgenes\",\n\t\"quantity\": 20\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

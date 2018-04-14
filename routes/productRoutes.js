@@ -202,6 +202,7 @@ var productRouter = function (Product) {
             req.product.category = req.body.category;
             req.product.images = req.body.images;
             req.product.properties = req.body.properties;
+            req.product.prices = req.body.prices;
             req.product.publicUnitPrice = req.body.publicUnitPrice;
             req.product.publicPackagePrice = req.body.publicPackagePrice;
             req.product.clientUnitPrice = req.body.clientUnitPrice;
