@@ -4,31 +4,46 @@ var invitationsKey = "Invitaciones";
 
 var getProductTags = function(oldProduct, newProduct, newProductTags) {
   
-  newProductTags = newProductTags || [];
-  _.pull(newProductTags, oldProduct.name);
-  _.pull(newProductTags, oldProduct.category);
-  _.pull(newProductTags, oldProduct.provider);
+  newProductTags = newProductTags || [];  
+  
+  _.pull(newProductTags, _.toUpper(oldProduct.name));
+  _.pull(newProductTags, _.toUpper(oldProduct.category));
+  _.pull(newProductTags, _.toUpper(oldProduct.provider));
 
-  newProductTags.push(newProduct.name);
-  newProductTags.push(newProduct.category);
-  newProductTags.push(newProduct.provider);
+  newProductTags.push(_.toUpper(newProduct.name));
+  newProductTags.push(_.toUpper(newProduct.category));
+  newProductTags.push(_.toUpper(newProduct.provider));
+
+  if(oldProduct.description) {
+    var oldDescriptionTags = _.toUpper(oldProduct.description).split(" ");
+    _.pullAll(newProductTags, oldDescriptionTags);
+  }
+
+  if(newProduct.description) {
+    var newDescriptionTags = _.toUpper(newProduct.description).split(" ");
+    newProductTags = newProductTags.concat(newDescriptionTags);
+  }
 
   if(oldProduct.category === invitationsKey) {
-    _.pull(newProductTags, oldProduct.properties.type);
-    _.pull(newProductTags, oldProduct.properties.size);
-    _.pull(newProductTags, oldProduct.properties.genre);
+    _.pull(newProductTags, _.toUpper(oldProduct.properties.type));
+    _.pull(newProductTags, _.toUpper(oldProduct.properties.size));
+    _.pull(newProductTags, _.toUpper(oldProduct.properties.genre));
   }
 
   if(newProduct.category === invitationsKey) {
-    newProductTags.push(newProduct.properties.type);
-    newProductTags.push(newProduct.properties.size);
-    newProductTags.push(newProduct.properties.genre);
+    newProductTags.push(_.toUpper(newProduct.properties.type));
+    newProductTags.push(_.toUpper(newProduct.properties.size));
+    newProductTags.push(_.toUpper(newProduct.properties.genre));
   }  
 
   newProductTags = _.filter(newProductTags, function(tag) {
       return !_.isEmpty(tag);
   });
   
+  newProductTags = _.uniqBy(newProductTags, function (tag) {
+    return _.toUpper(tag);
+  });
+
   return newProductTags;
 }
 

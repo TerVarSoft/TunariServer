@@ -53,6 +53,7 @@ var productSchema = new Schema({
 	isFavorite: {
 		type: Boolean
 	},
+	description: String,
     locations: [location],
 	clientUnitPrice: Number,
 	clientPackagePrice: Number,
