@@ -7,11 +7,32 @@ var sellingSchema = new Schema({
     productName: {
         type: String
     },
+    productId: {
+        type: String
+    },
     productType: {
         type: String
     },
     quantity: {
-        type: String
+        type: Number
+    },
+    price: {
+        type: Number
+    },
+    quantityForPrice: {
+        type: Number
+    },
+    buyingPrice: {
+        type: Number
+    },
+    revenue: {
+        type: Number
+    },
+    percentage: {
+        type: Number
+    },
+    total: {
+        type: Number
     }
 }, {
     timestamps: true
