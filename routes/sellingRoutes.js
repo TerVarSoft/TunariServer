@@ -73,8 +73,8 @@ var sellingRouter = function (Selling, Product) {
             var newSelling = new Selling(req.body);
 
             Product.findOne({ _id: req.body.productId }, function (err, product) {
-                if (product && product.quantity) {
-                    product.quantity -= req.body.quantity;
+                if (product) {
+                    product.quantity = product.quantity ? product.quantity - req.body.quantity : product.quantity;
                     product.quantity = product.quantity < 0 ? 0 : product.quantity;
 
                     product.save(function () {
@@ -123,7 +123,9 @@ var sellingRouter = function (Selling, Product) {
             }
 
             Product.findOne({ _id: req.body.productId }, function (err, product) {
-                var newProductQuantity = product.quantity + req.selling.quantity - req.body.quantity;
+                var newProductQuantity = (product && product.quantity) ?
+                    product.quantity + req.selling.quantity - req.body.quantity :
+                    product.quantity;
 
                 req.selling.productId = req.body.productId;
                 req.selling.quantity = req.body.quantity;
