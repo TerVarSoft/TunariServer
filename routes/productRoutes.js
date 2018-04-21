@@ -92,38 +92,17 @@ var productRouter = function (Product) {
                 return;
             }
 
-            if (req.body.imageData) {
-                var imageFolder = (req.product.properties && req.product.properties.type) || req.product.category;
-                imageFolder = imageFolder + "/";
-                cloudinary.v2.uploader.upload(req.body.imageData, {
-                    folder: imageFolder,
-                    public_id: req.product.name,
-                    overwrite: true,
-                    invalidate: true
-                }, function (error, result) {
-                    if (error) {
-                        console.log(error);
-                    } else {
-
-                        req.product.imageVersion = result.version;
-                        req.product.save(function (err) {
-                            if (err) {
-                                logger.log('error', err);
-                            }
-                        });
-                    }
-                });
-            }
-
-
             var newProduct = new Product(req.body);
             newProduct.name = _.toUpper(newProduct.name);
             newProduct.sortTag = productUtil.getSortTag(newProduct);
             newProduct.tags = productUtil.getProductTags({}, newProduct, newProduct.tags);
             newProduct.imageExtension = newProduct.imageExtension || "jpg";
 
+
+
             newProduct.save(function (err) {
                 if (err) {
+                    console.log(err);
                     logger.log('error', err);
 
                     if (err.code = 11000) {
@@ -135,6 +114,29 @@ var productRouter = function (Product) {
                     }
                 }
                 else {
+                    if (req.body.imageData) {
+                        var imageFolder = (newProduct.properties && newProduct.properties.type) || newProduct.category;
+                        imageFolder = imageFolder + "/";
+                        cloudinary.v2.uploader.upload(req.body.imageData, {
+                            folder: imageFolder,
+                            public_id: newProduct.name,
+                            overwrite: true,
+                            invalidate: true
+                        }, function (error, result) {
+                            if (error) {
+                                console.log(error);
+                            } else {
+
+                                newProduct.imageVersion = result.version;
+                                newProduct.save(function (err) {
+                                    if (err) {
+                                        logger.log('error', err);
+                                    }
+                                });
+                            }
+                        });
+                    }
+
                     res.status(201).sendWrapped(newProduct);
                     logger.log('info',
                         'productId:' + newProduct._id + ' ' +
@@ -186,8 +188,11 @@ var productRouter = function (Product) {
         }
 
         Product.findById(req.params.productId, function (err, product) {
-            if (err)
+            if (err) {
+                console.log(err);
                 res.status(500).send(err);
+            }
+
             else if (product) {
                 var imageFolder = (product.properties && product.properties.type) || product.category;
 
@@ -203,7 +208,7 @@ var productRouter = function (Product) {
                 }
                 product.thumbnailUrl = cloudinary.url(cloudinaryProductId,
                     { type: 'private', sign_url: true, secure: true, width: 150, height: 100, crop: "fit" });
-                    
+
                 req.product = product;
                 next();
             }
@@ -274,8 +279,11 @@ var productRouter = function (Product) {
             req.product.locations = req.body.locations;
             req.product.isFavorite = req.body.isFavorite;
             req.product.save(function (err) {
-                if (err)
+                if (err) {
+                    console.log(err);
                     res.status(500).send(err);
+                }
+
                 else {
                     res.sendWrapped(req.product);
                     logger.log('info',
@@ -298,8 +306,10 @@ var productRouter = function (Product) {
                 req.product[key] = req.body[key];
             }
             req.product.save(function (err) {
-                if (err)
+                if (err) {
+                    console.log(err);
                     res.status(500).send(err);
+                }
                 else {
                     res.json(req.product);
                 }
@@ -312,8 +322,10 @@ var productRouter = function (Product) {
             }
 
             req.product.remove(function (err) {
-                if (err)
+                if (err) {
+                    console.log(err);
                     res.status(500).send(err);
+                }
                 else {
                     res.status(204).send('Removed');
                 }
