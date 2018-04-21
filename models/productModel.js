@@ -49,10 +49,13 @@ var productSchema = new Schema({
 	quantityPerPackage: Number,
     provider: {
         type: String
-    },
+	},
+	imageVersion: {
+		type: String,
+	},
 	isFavorite: {
 		type: Boolean
-	},
+	},	
 	description: String,
     locations: [location],
 	clientUnitPrice: Number,

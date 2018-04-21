@@ -59,15 +59,18 @@ var productRouter = function (Product) {
                     _.each(products, function (product) {
 
                         var imageFolder = (product.properties && product.properties.type) || product.category;
-                        
+                        var cloudinaryProductId = product.imageVersion ?
+                            "v" + product.imageVersion + "/" + imageFolder + "/" + product.name + "." + product.imageExtension :
+                            imageFolder + "/" + product.name + "." + product.imageExtension;
+
                         if (userRole === "admin") {
-                            product.imageUrl = cloudinary.url(imageFolder + "/" + product.name + "." + product.imageExtension,
+                            product.imageUrl = cloudinary.url(cloudinaryProductId,
                                 { type: 'private', sign_url: true, secure: true });
-                            product.previewUrl = cloudinary.url(imageFolder + "/" + product.name + "." + product.imageExtension,
-                                { type: 'private', sign_url: true, secure: true, width:450, height:300, crop: "fit" });
+                            product.previewUrl = cloudinary.url(cloudinaryProductId,
+                                { type: 'private', sign_url: true, secure: true, width: 450, height: 300, crop: "fit" });
                         }
-                        product.thumbnailUrl = cloudinary.url(imageFolder + "/" + product.name + "." + product.imageExtension,
-                            { type: 'private', sign_url: true, secure: true, width:150, height:100, crop: "fit" });
+                        product.thumbnailUrl = cloudinary.url(cloudinaryProductId,
+                            { type: 'private', sign_url: true, secure: true, width: 150, height: 100, crop: "fit" });
                     });
 
                     res.status(200).sendWrapped({
@@ -88,6 +91,30 @@ var productRouter = function (Product) {
                 res.status(401).send(needToBeAdminMessage);
                 return;
             }
+
+            if (req.body.imageData) {
+                var imageFolder = (req.product.properties && req.product.properties.type) || req.product.category;
+                imageFolder = imageFolder + "/";
+                cloudinary.v2.uploader.upload(req.body.imageData, {
+                    folder: imageFolder,
+                    public_id: req.product.name,
+                    overwrite: true,
+                    invalidate: true
+                }, function (error, result) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+
+                        req.product.imageVersion = result.version;
+                        req.product.save(function (err) {
+                            if (err) {
+                                logger.log('error', err);
+                            }
+                        });
+                    }
+                });
+            }
+
 
             var newProduct = new Product(req.body);
             newProduct.name = _.toUpper(newProduct.name);
@@ -163,16 +190,20 @@ var productRouter = function (Product) {
                 res.status(500).send(err);
             else if (product) {
                 var imageFolder = (product.properties && product.properties.type) || product.category;
-                
-                if (userRole === "admin") {
-                    product.imageUrl = cloudinary.url(imageFolder + "/" + product.name + "." + product.imageExtension,
-                        { type: 'private', sign_url: true, secure: true });
-                    product.previewUrl = cloudinary.url(imageFolder + "/" + product.name + "." + product.imageExtension,
-                        { type: 'private', sign_url: true, secure: true, width:450, height:300, crop: "fit" });
-                }
-                product.thumbnailUrl = cloudinary.url(imageFolder + "/" + product.name + "." + product.imageExtension,
-                    { type: 'private', sign_url: true, secure: true, width:150, height:100, crop: "fit" });
 
+                var cloudinaryProductId = product.imageVersion ?
+                    "v" + product.imageVersion + "/" + imageFolder + "/" + product.name + "." + product.imageExtension :
+                    imageFolder + "/" + product.name + "." + product.imageExtension;
+
+                if (userRole === "admin") {
+                    product.imageUrl = cloudinary.url(cloudinaryProductId,
+                        { type: 'private', sign_url: true, secure: true });
+                    product.previewUrl = cloudinary.url(cloudinaryProductId,
+                        { type: 'private', sign_url: true, secure: true, width: 450, height: 300, crop: "fit" });
+                }
+                product.thumbnailUrl = cloudinary.url(cloudinaryProductId,
+                    { type: 'private', sign_url: true, secure: true, width: 150, height: 100, crop: "fit" });
+                    
                 req.product = product;
                 next();
             }
@@ -188,10 +219,35 @@ var productRouter = function (Product) {
             res.sendWrapped(req.product);
         })
         .put(function (req, res) {
+
             if (!tokenUtilities.isAdmin(req)) {
                 res.status(401).send(needToBeAdminMessage);
                 return;
             }
+
+            if (req.body.imageData) {
+                var imageFolder = (req.product.properties && req.product.properties.type) || req.product.category;
+                imageFolder = imageFolder + "/";
+                cloudinary.v2.uploader.upload(req.body.imageData, {
+                    folder: imageFolder,
+                    public_id: req.product.name,
+                    overwrite: true,
+                    invalidate: true
+                }, function (error, result) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+
+                        req.product.imageVersion = result.version;
+                        req.product.save(function (err) {
+                            if (err) {
+                                logger.log('error', err);
+                            }
+                        });
+                    }
+                });
+            }
+
 
             req.body.name = _.toUpper(req.body.name)
             req.product.sortTag = productUtil.getSortTag(req.body);
@@ -204,6 +260,7 @@ var productRouter = function (Product) {
             req.product.description = req.body.description;
             req.product.properties = req.body.properties;
             req.product.prices = req.body.prices;
+            req.product.imageVersion = req.body.imageVersion;
             req.product.publicUnitPrice = req.body.publicUnitPrice;
             req.product.publicPackagePrice = req.body.publicPackagePrice;
             req.product.clientUnitPrice = req.body.clientUnitPrice;
