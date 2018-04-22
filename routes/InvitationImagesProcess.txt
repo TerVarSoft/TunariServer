@@ -1,0 +1,24 @@
+Opcion 1:
+    Recorte con Perspectiva (C)
+
+Opcion 2:
+    Pluma (P) , cuando la imagen no es simplemente cuadrada
+    Navegador/Trazados, click derecho en el trazado q acabamos de hacer (Hacer seleccion)
+    Ctrl+J para hacer una nueva capa 
+    Borrar la capa de fondo
+
+Tamanho (Ctrl+Alt+Q)
+Ver lo mas grande posible (Ctrl+1)
+Ver 100% (Ctrl+1)
+--> Cortar hasta que al hacer 100% (Ctrl+1) se vea en casi toda la pantalla
+Tono automatico (Crtl+Shift+L)
+Contraste automatico (Crtl+Shift+Alt+L)
+Color Automatico (Crtl+Shift+B)
+Brillo/Contraste manual  (Crtl+Shift+P)
+
+--> Si la imagen es cuadrada guardar como jpg y configurara en tunariWebClient
+--> Si la imagen tiene forma guardarla como png
+--> Subir a cloudinary bajo una carpeta con el nombre del tipo o de la categoria
+--> Si no es la primera vez q se esta subiendo la imagen, borrar la imagen original
+y configurar el numero de version de la nueva imagen que se puede encontrar en cloudinary
+y ponerla en tunariWebClient

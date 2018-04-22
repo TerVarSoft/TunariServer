@@ -37,6 +37,9 @@ var productSchema = new Schema({
 	thumbnailUrl : {
 		type: String
 	},
+	publicPreviewUrl : {
+		type: String
+	},
 	previewUrl : {
 		type: String
 	},

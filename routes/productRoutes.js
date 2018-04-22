@@ -16,9 +16,8 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-var publicProductProperties = "name category properties.type publicUnitPrice publicPackagePrice";
-var clientProductProperties = "name category properties.type publicUnitPrice publicPackagePrice " +
-    "clientUnitPrice clientPackagePrice";
+var publicProductProperties = "name category properties.type imageVersion imageExtension";
+var clientProductProperties = "name category properties.type imageVersion imageExtension prices";
 var needToBeAdminMessage = "Need to be admin to perform this action";
 
 var productRouter = function (Product) {
@@ -68,9 +67,24 @@ var productRouter = function (Product) {
                                 { type: 'private', sign_url: true, secure: true });
                             product.previewUrl = cloudinary.url(cloudinaryProductId,
                                 { type: 'private', sign_url: true, secure: true, width: 450, height: 300, crop: "fit" });
+                            product.thumbnailUrl = cloudinary.url(cloudinaryProductId, {
+                                type: 'private', sign_url: true, secure: true, width: 150, height: 100, crop: "fit"
+                            });
                         }
-                        product.thumbnailUrl = cloudinary.url(cloudinaryProductId,
-                            { type: 'private', sign_url: true, secure: true, width: 150, height: 100, crop: "fit" });
+
+                        if (userRole === "client") {
+                            product.publicPreviewUrl = cloudinary.url(cloudinaryProductId, {
+                                type: 'private', sign_url: true, secure: true, transformation: [
+                                    { width: 450, height: 300, crop: "fit" },
+                                    { overlay: "logobw", opacity: 25, width: 50, flags: "tiled" }
+                                ]
+                            });
+                        }
+
+                        product.thumbnailUrl = cloudinary.url(cloudinaryProductId, {
+                            type: 'private', sign_url: true, secure: true, width: 150, height: 100, crop: "fit"
+                        });
+
                     });
 
                     res.status(200).sendWrapped({
