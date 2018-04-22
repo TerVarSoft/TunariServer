@@ -222,7 +222,7 @@ var productRouter = function (Product) {
                     product.publicPreviewUrl = cloudinary.url(cloudinaryProductId, {
                         type: 'private', sign_url: true, secure: true, transformation: [
                             { width: 450, height: 300, crop: "fit" },
-                            { overlay: "logobw", opacity: 25, width: 50, flags: "tiled" }
+                            { overlay: "logobw", opacity: 35, width: 50, flags: "tiled" }
                         ]
                     });
                 }
