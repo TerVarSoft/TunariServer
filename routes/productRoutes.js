@@ -67,9 +67,6 @@ var productRouter = function (Product) {
                                 { type: 'private', sign_url: true, secure: true });
                             product.previewUrl = cloudinary.url(cloudinaryProductId,
                                 { type: 'private', sign_url: true, secure: true, width: 450, height: 300, crop: "fit" });
-                            product.thumbnailUrl = cloudinary.url(cloudinaryProductId, {
-                                type: 'private', sign_url: true, secure: true, width: 150, height: 100, crop: "fit"
-                            });
                         }
 
                         if (userRole === "client") {
@@ -220,8 +217,19 @@ var productRouter = function (Product) {
                     product.previewUrl = cloudinary.url(cloudinaryProductId,
                         { type: 'private', sign_url: true, secure: true, width: 450, height: 300, crop: "fit" });
                 }
-                product.thumbnailUrl = cloudinary.url(cloudinaryProductId,
-                    { type: 'private', sign_url: true, secure: true, width: 150, height: 100, crop: "fit" });
+
+                if (userRole === "client") {
+                    product.publicPreviewUrl = cloudinary.url(cloudinaryProductId, {
+                        type: 'private', sign_url: true, secure: true, transformation: [
+                            { width: 450, height: 300, crop: "fit" },
+                            { overlay: "logobw", opacity: 25, width: 50, flags: "tiled" }
+                        ]
+                    });
+                }
+
+                product.thumbnailUrl = cloudinary.url(cloudinaryProductId, {
+                    type: 'private', sign_url: true, secure: true, width: 150, height: 100, crop: "fit"
+                });
 
                 req.product = product;
                 next();
