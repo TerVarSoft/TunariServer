@@ -14,6 +14,7 @@ To set up TunariServer you need to run:
   modify with your configs.  
 - If you do not have gulp installed globally installed by running: npm install --global gulp-cli  
 - Run: gulp
+- Create an admin user by adding it to the database and log in by using the login endpoint
 - As soon as you have the tokens collections in your database, create an index for token expiration:
     db.tokens.createIndex( { "createdAt": 1 }, { expireAfterSeconds: 86400 } )
 
