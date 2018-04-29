@@ -11,7 +11,7 @@ var tokenSchema = new Schema({
     }
 }, { timestamps: true });
 
-tokenSchema.index({createdAt: 1},{expireAfterSeconds: 86400});
+tokenSchema.index({updatedAt: 1},{expireAfterSeconds: 86400});
 
 // the schema is useless so far
 // we need to create a model using it
