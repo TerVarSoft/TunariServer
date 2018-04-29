@@ -27,9 +27,10 @@ var Selling = require('./models/sellingModel');
 var Client = require('./models/clientModel');
 var Setting = require('./models/settingModel');
 var User = require('./models/userModel');
+var Token = require('./models/tokenModel');
 
 // Routers
-var userRouter = require('./routes/userRoutes')(User);
+var userRouter = require('./routes/userRoutes')(User, Token);
 var loginRouter = require('./routes/loginRoutes')(User);
 var configRouter = require('./routes/configRoutes')(Setting);
 var productRouter = require('./routes/productRoutes')(Product);
@@ -90,7 +91,15 @@ app.use(function (req, res, next) {
           message: "Authentication failed"
         });
       } else {
-        next();
+        Token.findOne({ userId: payload.sub.id }, function (err, token) {
+          if (token) {
+            next();
+          } else {
+            return res.status(401).send({
+              message: "Yout token is expired"
+            });
+          }
+        });
       }
     } catch (err) {
       console.log(err);

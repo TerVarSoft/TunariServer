@@ -1,47 +1,57 @@
 var jwt = require('jwt-simple');
+var moment = require('moment');
+var Token = require('./../models/tokenModel');
 
-var createSendToken = function(user, res) {
-  var payload = {    
+var createSendToken = function (user, res) {
+  var payload = {
     sub: {
       id: user._id,
-      role: user.role      
-    } 
+      role: user.role
+    },
+    iat: moment().unix()
   };
-  
-  var token = jwt.encode(payload, process.env.TUNARI_SECRET);
+  var tokenValue = jwt.encode(payload, process.env.TUNARI_SECRET);
 
-  res.status(200).sendWrapped({
-    user: user.removePassword(),
-    token: token
-  });                  
+  var newToken = {
+    value: tokenValue,
+    userId: user._id
+  };
+  var options = { upsert: true, new: true, setDefaultsOnInsert: true };
+
+  Token.findOneAndUpdate({ userId: user._id }, newToken, options, function (err) {
+    res.status(200).sendWrapped({
+      user: user.removePassword(),
+      token: tokenValue
+    });
+  });
 };
 
-var getUserRole = function(req) {
+var getUserRole = function (req) {
   var public = "public";
 
-  if(!req.headers.authorization) {
+  if (!req.headers.authorization) {
     return public;
   }
-  else {      
+  else {
     try {
       var token = req.headers.authorization.split(' ')[1];
       var payload = jwt.decode(token, process.env.TUNARI_SECRET);
 
-      if(!payload.sub || !payload.sub.id || !payload.sub.role) {
+      if (!payload.sub || !payload.sub.id || !payload.sub.role) {
         return public;
       } else {
-        return payload.sub.role;        
-      }  
-    } catch(err) {
+        return payload.sub.role;
+      }
+    } catch (err) {
       console.log(err);
       return public;
-    }       
+    }
   }
 };
 
-var isAdmin = function(req) {
+var isAdmin = function (req) {
   var userRole = getUserRole(req);
-  return userRole === "admin";  
+  return userRole === "admin";
 }
 
 module.exports.createSendToken = createSendToken;

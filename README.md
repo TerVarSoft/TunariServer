@@ -14,6 +14,8 @@ To set up TunariServer you need to run:
   modify with your configs.  
 - If you do not have gulp installed globally installed by running: npm install --global gulp-cli  
 - Run: gulp
+- As soon as you have the tokens collections in your database, create an index for token expiration:
+    db.tokens.createIndex( { "createdAt": 1 }, { expireAfterSeconds: 86400 } )
 
 # To deploy TunariServer
 
